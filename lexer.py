@@ -32,14 +32,16 @@ class LexicalAnalyzer:
         # Token specifications using Regular Expressions
         self.token_specification = [
             ('COMMENT_MULTI',   r'/\*[\s\S]*?\*/'),            # Multi-line comment
+            ('ERROR_COMMENT',   r'/\*[\s\S]*'),                # UNCLOSED Multi-line comment (no matching */)
             ('COMMENT_SINGLE',  r'//.*'),                      # Single-line comment
             ('FLOAT_LITERAL',   r'\d+\.\d+'),                  # Float literal
-            ('INTEGER_LITERAL', r'\d+'),                       # Integer literal (must be after FLOAT)
+            ('INVALID_ID',      r'\d+[A-Za-z_][A-Za-z0-9_]*'), # Invalid identifiers like 9var (MUST be before INT)
+            ('INTEGER_LITERAL', r'\d+'),                       # Integer literal (must be after FLOAT and INVALID_ID)
             ('STRING_LITERAL',  r'"[^"\n]*"'),                 # String literal
-            ('CHARACTER_LITERAL', r"'[^'\n]'"),                 # Character literal
+            ('ERROR_STRING',    r'"[^"\n]*'),                  # UNCLOSED String literal
+            ('CHARACTER_LITERAL', r"'[^'\n]'"),                # Character literal
             ('OPERATOR',        r'\+\+|--|==|!=|<=|>=|\+=|-=|\*=|\/=|&&|\|\||[+\-*/%=<>=!&|]'), # Operators
-            ('SYMBOL',          r'[(){}\[\] ,;"]'),             # Delimiters & Symbols
-            ('INVALID_ID',      r'\d+[A-Za-z_][A-Za-z0-9_]*'), # Invalid identifiers like 9var
+            ('SYMBOL',          r'[(){}\[\] ,;]'),              # Delimiters & Symbols
             ('IDENTIFIER',      r'[A-Za-z_][A-Za-z0-9_]*'),    # Valid Identifiers
             ('NEWLINE',         r'\n'),                        # Line endings
             ('SKIP',            r'[ \t\r]+'),                  # Skip whitespace
@@ -102,6 +104,12 @@ class LexicalAnalyzer:
             elif kind == 'INVALID_ID':
                 self.errors.append(f"Lexical Error (line {line_num}, col {column}): Invalid identifier '{value}'")
                 continue
+            elif kind == 'ERROR_STRING':
+                self.errors.append(f"Lexical Error (line {line_num}, col {column}): Unterminated string literal")
+                continue
+            elif kind == 'ERROR_COMMENT':
+                self.errors.append(f"Lexical Error (line {line_num}, col {column}): Unclosed multi-line comment")
+                continue
             elif kind == 'MISMATCH':
                 self.errors.append(f"Lexical Error (line {line_num}, col {column}): Invalid character '{value}'")
                 continue
@@ -137,8 +145,11 @@ def main():
     with open(input_file, 'r') as f:
         code = f.read()
 
+    print(f"\nProcessing file: {input_file}...")
     lexer.tokenize(code)
     lexer.save_output()
+    print("Tokens saved to tokens.txt")
+    print("Symbol table saved to symbol_table.txt")
 
     while True:
         print("\n" + "="*40)

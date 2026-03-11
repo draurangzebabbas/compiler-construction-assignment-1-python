@@ -5,8 +5,15 @@ x               | variable        | identifier      | --
 3.14            | float           | literal         | 3.14           
 y               | variable        | identifier      | --             
 10              | integer         | literal         | 10             
-1               | integer         | literal         | 1              
+100             | integer         | literal         | 100            
+my_char         | variable        | identifier      | --             
+string          | variable        | identifier      | --             
+error_str       | variable        | identifier      | --             
+val             | variable        | identifier      | --             
+45.6            | float           | literal         | 45.6           
+7               | integer         | literal         | 7              
+price           | variable        | identifier      | --             
 11              | integer         | literal         | 11             
 printf          | variable        | identifier      | --             
-"Reached target!\n" | string          | literal         | "Reached target!\n"
+"Success!\n"    | string          | literal         | "Success!\n"   
 0               | integer         | literal         | 0              

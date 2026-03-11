@@ -1,12 +1,19 @@
 int main() {
     float x = 3.14;
     int y = 10;
-    // Increment y
-    y += 1;
+    
+    // --- Intentional Lexical Errors ---
+    int 9_variable = 100;    // Error: Invalid Identifier (starts with digit)
+    char my_char = @;        // Error: Invalid Character '@'
+    string error_str = "Hi;  // Error: Unterminated string literal
+    float val = 45.6.7;      // Error: Invalid character '.' (mismatch after 45.6)
+    $price = 10;             // Error: Invalid character '$'
+    
     if (y >= 11) {
-        printf("Reached target!\n");
+        printf("Success!\n");
     }
-    /* Multi-line
-       comment test */
+    
     return 0;
 }
+
+/* Error: This multi-line comment is never closed
