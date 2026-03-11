@@ -1,0 +1,225 @@
+Assignment#1
+Assignment Title:
+
+Design and Implement a Robust Lexical Analyzer for a Mini Programming Language
+
+Objective
+
+To design and implement a multi-featured lexical analyzer (scanner) that:
+
+Reads and processes a C-like source file,
+
+Tokenizes it into keywords, identifiers, operators, literals, comments, and special symbols,
+
+Handles complex token patterns such as multi-character operators (+=, ==, <=, &&, etc.),
+
+Performs error detection (e.g., invalid identifiers, unterminated strings),
+
+Supports line number tracking,
+
+Produces a symbol table for identifiers and literals,
+
+And generates an output token stream file for later parsing.
+
+Language Description
+
+You’ll design a small programming language, MiniLang, with the following characteristics:
+
+Keywords:
+int, float, char, if, else, for, while, return, break, continue
+
+Operators:
++  -  *  /  %  
+++  --  
+=  ==  !=  <  <=  >  >=  
+&&  ||  !
++=  -=  *=  /=
+
+Delimiters & Symbols:
+( ) { } [ ] , ; "
+
+Identifiers:
+
+Start with a letter or underscore ([A-Za-z_][A-Za-z0-9_]*)
+
+Case-sensitive
+
+Literals:
+
+Integer: [0-9]+
+
+Float: [0-9]*\.[0-9]+
+
+Character: '[A-Za-z0-9]'
+
+String: "[^"\n]*"
+
+Comments:
+
+Single-line: // comment
+
+Multi-line: /* comment */
+
+Assignment Tasks
+Task 1 — Lexical Rules Specification
+
+Define all regular expressions (regex) for your tokens in a structured format.
+Example:
+
+Token Type	Regex / Pattern	Example
+IDENTIFIER	[A-Za-z_][A-Za-z0-9_]*	counter, _var2
+INTEGER_LITERAL	[0-9]+	123
+FLOAT_LITERAL	[0-9]*\.[0-9]+	3.14
+OPERATOR	`(++	--
+COMMENT	(//.*	/*[^]*+(?:[^/][^]*+)/)
+Task 2 — Tokenizer Implementation
+
+Write a lexical analyzer program that:
+
+Reads a .mini source file.
+
+Recognizes all tokens according to the defined patterns.
+
+Tracks line and column numbers.
+
+Detects and reports lexical errors, such as:
+
+Invalid identifiers (9var)
+
+Unterminated string literals ("hello)
+
+Unclosed comments (/* unclosed)
+
+Task 3 — Symbol Table Construction
+
+Create a symbol table (e.g., Python dictionary or C++ map) that:
+
+Stores identifiers, data types (if declared), and memory references (dummy values).
+
+Stores constants (numeric, string, char) with their literal values.
+
+Example Symbol Table:
+
+Name	Type	Category	Value
+x	int	variable	—
+msg	string	variable	—
+3.14	float	literal	3.14
+Task 4 — Output Token Stream File
+
+Output a structured token stream (e.g., tokens.txt) containing:
+
+<LINE 1>  <KEYWORD, int>
+<LINE 1>  <IDENTIFIER, x>
+<LINE 1>  <OPERATOR, = >
+<LINE 1>  <INTEGER_LITERAL, 5>
+<LINE 1>  <SYMBOL, ;>
+
+
+and a separate file symbol_table.txt with symbol entries.
+
+Task 5 — Error Reporting and Recovery
+
+When an invalid token is found:
+
+Print a clear message:
+
+Lexical Error (line 5, col 12): Invalid character '@'
+
+
+Skip the bad token and continue scanning the rest of the code.
+
+Bonus Challenge (Optional)
+
+Implement:
+
+Token counting statistics:
+
+Number of keywords, identifiers, literals, etc.
+
+Comment removal feature (output clean source without comments).
+
+A GUI or CLI menu to choose options like:
+
+View tokens
+
+View symbol table
+
+View cleaned source
+
+Sample Input File (test.mini)
+int main() {
+    float x = 3.14;
+    int y = 10;
+    // Increment y
+    y += 1;
+    if (y >= 11) {
+        printf("Reached target!\n");
+    }
+    return 0;
+}
+
+Expected Output
+<1> <KEYWORD, int>
+<1> <IDENTIFIER, main>
+<1> <SYMBOL, (>
+<1> <SYMBOL, )>
+<1> <SYMBOL, {>
+<2> <KEYWORD, float>
+<2> <IDENTIFIER, x>
+<2> <OPERATOR, =>
+<2> <FLOAT_LITERAL, 3.14>
+<2> <SYMBOL, ;>
+...
+
+
+And symbol table:
+
+x, float, variable
+y, int, variable
+3.14, float, literal
+
+Implementation Hints
+
+You can implement this in:
+
+Python (with re module or PLY)
+
+C/C++ (with manual string processing or Flex)
+
+Java (using regex or JFlex)
+
+Example Python snippet:
+import re
+
+token_specification = [
+    ('FLOAT',      r'\d+\.\d+'),
+    ('INT',        r'\d+'),
+    ('ID',         r'[A-Za-z_]\w*'),
+    ('OP',         r'\+\+|--|==|!=|<=|>=|\+=|-=|\=|/=|&&|\|\||[+\-/%=<>&|!]'),
+    ('STRING',     r'"[^"\n]*"'),
+    ('CHAR',       r"'.'"),
+    ('COMMENT',    r'//.|/\[\s\S]?\/'),
+    ('NEWLINE',    r'\n'),
+    ('SKIP',       r'[ \t]+'),
+    ('MISMATCH',   r'.')
+]
+
+Deliverables
+
+Source code (.py, .cpp, or .l file)
+
+Input file (.mini)
+
+Output files:
+
+tokens.txt
+
+symbol_table.txt
+
+Short report:
+
+Token patterns table
+
+Flow diagram of the scanner
+
+Screenshots of successful execution and error detection

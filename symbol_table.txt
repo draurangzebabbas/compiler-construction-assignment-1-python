@@ -1,0 +1,12 @@
+Name            | Type       | Category     | Value     
+-------------------------------------------------------
+main            | variable   | identifier   | --        
+x               | variable   | identifier   | --        
+3.14            | float      | literal      | 3.14      
+y               | variable   | identifier   | --        
+10              | integer    | literal      | 10        
+1               | integer    | literal      | 1         
+11              | integer    | literal      | 11        
+printf          | variable   | identifier   | --        
+"Reached target!\n" | string     | literal      | "Reached target!\n"
+0               | integer    | literal      | 0         
