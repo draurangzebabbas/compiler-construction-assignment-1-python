@@ -27,6 +27,12 @@ This project involves the design and implementation of a robust **Lexical Analyz
 
 ---
 
+### 📽️ Video Demo
+You can view a demonstration of the Lexical Analyzer in action here:
+[**Watch Demo Video**](https://drive.google.com/file/d/17zhl7h3-ZPqcqQlCqa5JVcVzHbRYTfn-/view?usp=sharing)
+
+---
+
 ## 📁 File Structure
 - `lexer.py`: The core Python implementation of the lexical analyzer.
 - `test.mini`: Sample MiniLang source file used for testing.
