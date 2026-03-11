@@ -1,36 +1,91 @@
-<1> <KEYWORD, int>
-<1> <IDENTIFIER, main>
-<1> <SYMBOL, (>
-<1> <SYMBOL, )>
-<1> <SYMBOL, {>
-<2> <KEYWORD, float>
-<2> <IDENTIFIER, x>
-<2> <OPERATOR, =>
-<2> <FLOAT_LITERAL, 3.14>
-<2> <SYMBOL, ;>
-<3> <KEYWORD, int>
-<3> <IDENTIFIER, y>
-<3> <OPERATOR, =>
-<3> <INTEGER_LITERAL, 10>
-<3> <SYMBOL, ;>
-<5> <IDENTIFIER, y>
-<5> <OPERATOR, +=>
-<5> <INTEGER_LITERAL, 1>
-<5> <SYMBOL, ;>
-<6> <KEYWORD, if>
-<6> <SYMBOL, (>
-<6> <IDENTIFIER, y>
-<6> <OPERATOR, >=>
-<6> <INTEGER_LITERAL, 11>
-<6> <SYMBOL, )>
-<6> <SYMBOL, {>
-<7> <IDENTIFIER, printf>
-<7> <SYMBOL, (>
-<7> <STRING_LITERAL, "Reached target!\n">
-<7> <SYMBOL, )>
-<7> <SYMBOL, ;>
-<8> <SYMBOL, }>
-<11> <KEYWORD, return>
-<11> <INTEGER_LITERAL, 0>
-<11> <SYMBOL, ;>
-<12> <SYMBOL, }>
+<LINE 1>  <KEYWORD, int>
+<LINE 1>  <SYMBOL,  >
+<LINE 1>  <IDENTIFIER, main>
+<LINE 1>  <SYMBOL, (>
+<LINE 1>  <SYMBOL, )>
+<LINE 1>  <SYMBOL,  >
+<LINE 1>  <SYMBOL, {>
+<LINE 2>  <SYMBOL,  >
+<LINE 2>  <SYMBOL,  >
+<LINE 2>  <SYMBOL,  >
+<LINE 2>  <SYMBOL,  >
+<LINE 2>  <KEYWORD, float>
+<LINE 2>  <SYMBOL,  >
+<LINE 2>  <IDENTIFIER, x>
+<LINE 2>  <SYMBOL,  >
+<LINE 2>  <OPERATOR, =>
+<LINE 2>  <SYMBOL,  >
+<LINE 2>  <FLOAT_LITERAL, 3.14>
+<LINE 2>  <SYMBOL, ;>
+<LINE 3>  <SYMBOL,  >
+<LINE 3>  <SYMBOL,  >
+<LINE 3>  <SYMBOL,  >
+<LINE 3>  <SYMBOL,  >
+<LINE 3>  <KEYWORD, int>
+<LINE 3>  <SYMBOL,  >
+<LINE 3>  <IDENTIFIER, y>
+<LINE 3>  <SYMBOL,  >
+<LINE 3>  <OPERATOR, =>
+<LINE 3>  <SYMBOL,  >
+<LINE 3>  <INTEGER_LITERAL, 10>
+<LINE 3>  <SYMBOL, ;>
+<LINE 4>  <SYMBOL,  >
+<LINE 4>  <SYMBOL,  >
+<LINE 4>  <SYMBOL,  >
+<LINE 4>  <SYMBOL,  >
+<LINE 5>  <SYMBOL,  >
+<LINE 5>  <SYMBOL,  >
+<LINE 5>  <SYMBOL,  >
+<LINE 5>  <SYMBOL,  >
+<LINE 5>  <IDENTIFIER, y>
+<LINE 5>  <SYMBOL,  >
+<LINE 5>  <OPERATOR, +=>
+<LINE 5>  <SYMBOL,  >
+<LINE 5>  <INTEGER_LITERAL, 1>
+<LINE 5>  <SYMBOL, ;>
+<LINE 6>  <SYMBOL,  >
+<LINE 6>  <SYMBOL,  >
+<LINE 6>  <SYMBOL,  >
+<LINE 6>  <SYMBOL,  >
+<LINE 6>  <KEYWORD, if>
+<LINE 6>  <SYMBOL,  >
+<LINE 6>  <SYMBOL, (>
+<LINE 6>  <IDENTIFIER, y>
+<LINE 6>  <SYMBOL,  >
+<LINE 6>  <OPERATOR, >=>
+<LINE 6>  <SYMBOL,  >
+<LINE 6>  <INTEGER_LITERAL, 11>
+<LINE 6>  <SYMBOL, )>
+<LINE 6>  <SYMBOL,  >
+<LINE 6>  <SYMBOL, {>
+<LINE 7>  <SYMBOL,  >
+<LINE 7>  <SYMBOL,  >
+<LINE 7>  <SYMBOL,  >
+<LINE 7>  <SYMBOL,  >
+<LINE 7>  <SYMBOL,  >
+<LINE 7>  <SYMBOL,  >
+<LINE 7>  <SYMBOL,  >
+<LINE 7>  <SYMBOL,  >
+<LINE 7>  <IDENTIFIER, printf>
+<LINE 7>  <SYMBOL, (>
+<LINE 7>  <STRING_LITERAL, "Reached target!\n">
+<LINE 7>  <SYMBOL, )>
+<LINE 7>  <SYMBOL, ;>
+<LINE 8>  <SYMBOL,  >
+<LINE 8>  <SYMBOL,  >
+<LINE 8>  <SYMBOL,  >
+<LINE 8>  <SYMBOL,  >
+<LINE 8>  <SYMBOL, }>
+<LINE 9>  <SYMBOL,  >
+<LINE 9>  <SYMBOL,  >
+<LINE 9>  <SYMBOL,  >
+<LINE 9>  <SYMBOL,  >
+<LINE 11>  <SYMBOL,  >
+<LINE 11>  <SYMBOL,  >
+<LINE 11>  <SYMBOL,  >
+<LINE 11>  <SYMBOL,  >
+<LINE 11>  <KEYWORD, return>
+<LINE 11>  <SYMBOL,  >
+<LINE 11>  <INTEGER_LITERAL, 0>
+<LINE 11>  <SYMBOL, ;>
+<LINE 12>  <SYMBOL, }>

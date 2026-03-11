@@ -1,8 +1,17 @@
+# ---------------------------------------------------------
+# Assignment: Compiler Construction - Assignment 1
+# Student Name: Aurangzeb Abbas
+# Roll No: S23NDOCS1M01044
+# Class: BsCs
+# Submitted to: Iffat Maa'am
+# Project: Design and Implement a Robust Lexical Analyzer for MiniLang
+# ---------------------------------------------------------
+
 import re
-import sys
 import os
 
 class Token:
+    """Represents a single token identified during lexical analysis."""
     def __init__(self, type, value, line, column):
         self.type = type
         self.value = value
@@ -10,28 +19,31 @@ class Token:
         self.column = column
 
     def __str__(self):
-        return f"<{self.line}> <{self.type}, {self.value}>"
+        # Format requirements: <LINE X> <TYPE, VALUE>
+        return f"<LINE {self.line}>  <{self.type}, {self.value}>"
 
 class LexicalAnalyzer:
+    """A lexical analyzer for the MiniLang programming language."""
     def __init__(self):
         self.keywords = {
             'int', 'float', 'char', 'if', 'else', 'for', 'while', 'return', 'break', 'continue'
         }
         
-        # Token specifications using Regex
+        # Token specifications using Regular Expressions
         self.token_specification = [
-            ('FLOAT_LITERAL',   r'\d+\.\d+'),                # Float (must be before INT)
-            ('INTEGER_LITERAL', r'\d+'),                       # Integer
-            ('STRING_LITERAL',  r'"[^"\n]*"'),                 # String literal
-            ('CHARACTER_LITERAL', r"'.[']"),                    # Character literal
             ('COMMENT_MULTI',   r'/\*[\s\S]*?\*/'),            # Multi-line comment
             ('COMMENT_SINGLE',  r'//.*'),                      # Single-line comment
+            ('FLOAT_LITERAL',   r'\d+\.\d+'),                  # Float literal
+            ('INTEGER_LITERAL', r'\d+'),                       # Integer literal (must be after FLOAT)
+            ('STRING_LITERAL',  r'"[^"\n]*"'),                 # String literal
+            ('CHARACTER_LITERAL', r"'[^'\n]'"),                 # Character literal
             ('OPERATOR',        r'\+\+|--|==|!=|<=|>=|\+=|-=|\*=|\/=|&&|\|\||[+\-*/%=<>=!&|]'), # Operators
-            ('SYMBOL',          r'[(){}\[\],;"]'),             # Delimiters & Symbols
-            ('IDENTIFIER',      r'[A-Za-z_][A-Za-z0-9_]*'),   # Identifiers
+            ('SYMBOL',          r'[(){}\[\] ,;"]'),             # Delimiters & Symbols
+            ('INVALID_ID',      r'\d+[A-Za-z_][A-Za-z0-9_]*'), # Invalid identifiers like 9var
+            ('IDENTIFIER',      r'[A-Za-z_][A-Za-z0-9_]*'),    # Valid Identifiers
             ('NEWLINE',         r'\n'),                        # Line endings
-            ('SKIP',            r'[ \t\r]+'),                  # Skip spaces and tabs
-            ('MISMATCH',        r'.'),                         # Any other character
+            ('SKIP',            r'[ \t\r]+'),                  # Skip whitespace
+            ('MISMATCH',        r'.'),                         # Any other character (error)
         ]
         
         self.tokens = []
@@ -46,12 +58,10 @@ class LexicalAnalyzer:
         }
 
     def tokenize(self, code):
+        """Processes source code and breaks it into tokens."""
         tok_regex = '|'.join('(?P<%s>%s)' % pair for pair in self.token_specification)
         line_num = 1
         line_start = 0
-        
-        # Track for unclosed multi-line comments manually if regex misses or for better error reporting
-        # But regex '[\s\S]*?' handles it mostly. We check for '/*' without '*/'.
         
         for mo in re.finditer(tok_regex, code):
             kind = mo.lastgroup
@@ -65,10 +75,8 @@ class LexicalAnalyzer:
             elif kind == 'SKIP':
                 continue
             elif kind == 'COMMENT_SINGLE' or kind == 'COMMENT_MULTI':
-                # Comments are ignored in token stream but tracked for line numbers in multi-line
                 if kind == 'COMMENT_MULTI':
                     line_num += value.count('\n')
-                    # Update line_start for column tracking after multi-line comment
                     last_newline = value.rfind('\n')
                     if last_newline != -1:
                         line_start = mo.start() + last_newline + 1
@@ -79,12 +87,11 @@ class LexicalAnalyzer:
                     self.stats['KEYWORDS'] += 1
                 else:
                     self.stats['IDENTIFIERS'] += 1
-                    # Add to symbol table
+                    # Add identifiers to symbol table if not present
                     if value not in self.symbol_table:
                         self.symbol_table[value] = {'type': 'variable', 'category': 'identifier', 'value': '--'}
             elif kind.endswith('_LITERAL'):
                 self.stats['LITERALS'] += 1
-                # Add literals to symbol table as requested
                 lit_type = kind.split('_')[0].lower()
                 if value not in self.symbol_table:
                     self.symbol_table[value] = {'type': lit_type, 'category': 'literal', 'value': value}
@@ -92,36 +99,29 @@ class LexicalAnalyzer:
                 self.stats['OPERATORS'] += 1
             elif kind == 'SYMBOL':
                 self.stats['SYMBOLS'] += 1
+            elif kind == 'INVALID_ID':
+                self.errors.append(f"Lexical Error (line {line_num}, col {column}): Invalid identifier '{value}'")
+                continue
             elif kind == 'MISMATCH':
                 self.errors.append(f"Lexical Error (line {line_num}, col {column}): Invalid character '{value}'")
                 continue
 
-            # Check for error patterns
-            if kind == 'IDENTIFIER' and value[0].isdigit():
-                self.errors.append(f"Lexical Error (line {line_num}, col {column}): Invalid identifier '{value}'")
-                continue
-
             self.tokens.append(Token(kind, value, line_num, column))
 
-        # Check for unterminated strings or comments (regex might match partially or mismatch)
-        # Actually, regex for STRING_LITERAL r'"[^"\n]*"' won't match if it hits newline without "
-        # We can do a second pass or handle it in MISMATCH. 
-        # For simplicity in this implementation, if a " is followed by letters and no " before newline, 
-        # it hits MISMATCH or skips. Let's refine the logic if needed.
-
     def save_output(self, token_file="tokens.txt", symbol_file="symbol_table.txt"):
+        """Saves generated tokens and symbol table to files."""
         with open(token_file, 'w') as f:
             for token in self.tokens:
                 f.write(str(token) + '\n')
         
         with open(symbol_file, 'w') as f:
-            f.write(f"{'Name':<15} | {'Type':<10} | {'Category':<12} | {'Value':<10}\n")
-            f.write("-" * 55 + "\n")
+            f.write(f"{'Name':<15} | {'Type':<15} | {'Category':<15} | {'Value':<15}\n")
+            f.write("-" * 65 + "\n")
             for name, info in self.symbol_table.items():
-                f.write(f"{name:<15} | {info['type']:<10} | {info['category']:<12} | {info['value']:<10}\n")
+                f.write(f"{name:<15} | {info['type']:<15} | {info['category']:<15} | {info['value']:<15}\n")
 
     def print_cleaned_source(self, code):
-        # Remove comments using regex
+        """Returns the source code with all comments removed."""
         cleaned = re.sub(r'//.*', '', code)
         cleaned = re.sub(r'/\*[\s\S]*?\*/', '', cleaned)
         return cleaned
@@ -141,45 +141,48 @@ def main():
     lexer.save_output()
 
     while True:
-        print("\n--- MiniLang Lexical Analyzer ---")
-        print("1. View Tokens")
+        print("\n" + "="*40)
+        print("   MiniLang Lexical Analyzer CLI   ")
+        print("="*40)
+        print("1. View Token Stream")
         print("2. View Symbol Table")
         print("3. View Cleaned Source (No Comments)")
-        print("4. View Statistics")
-        print("5. View Lexical Errors")
+        print("4. View Statistical Summary")
+        print("5. View Error Log")
         print("6. Exit")
+        print("="*40)
         
-        choice = input("Enter choice (1-6): ")
+        choice = input("Select an option (1-6): ")
         
         if choice == '1':
-            print("\n--- Tokens ---")
+            print("\n>>> Token Stream:")
             for t in lexer.tokens:
                 print(t)
         elif choice == '2':
-            print("\n--- Symbol Table ---")
-            print(f"{'Name':<15} | {'Type':<10} | {'Category':<12} | {'Value':<10}")
-            print("-" * 55)
+            print("\n>>> Symbol Table:")
+            print(f"{'Name':<15} | {'Type':<15} | {'Category':<15} | {'Value':<15}")
+            print("-" * 65)
             for name, info in lexer.symbol_table.items():
-                print(f"{name:<15} | {info['type']:<10} | {info['category']:<12} | {info['value']:<10}")
+                print(f"{name:<15} | {info['type']:<15} | {info['category']:<15} | {info['value']:<15}")
         elif choice == '3':
-            print("\n--- Cleaned Source ---")
+            print("\n>>> Cleaned Source Code:")
             print(lexer.print_cleaned_source(code))
         elif choice == '4':
-            print("\n--- Statistics ---")
+            print("\n>>> Analysis Statistics:")
             for k, v in lexer.stats.items():
-                print(f"{k}: {v}")
+                print(f"{k:<15}: {v}")
         elif choice == '5':
-            print("\n--- Lexical Errors ---")
+            print("\n>>> Lexical Error Log:")
             if not lexer.errors:
-                print("No errors found.")
+                print("Success: No lexical errors detected.")
             else:
                 for err in lexer.errors:
                     print(err)
         elif choice == '6':
-            print("Exiting...")
+            print("Shutting down Lexical Analyzer...")
             break
         else:
-            print("Invalid choice.")
+            print("Error: Invalid selection. Please choose 1-6.")
 
 if __name__ == "__main__":
     main()

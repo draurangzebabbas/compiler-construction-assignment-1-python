@@ -1,5 +1,13 @@
 # Assignment Report: MiniLang Lexical Analyzer
 
+**Student:** Aurangzeb Abbas  
+**Roll No:** S23NDOCS1M01044  
+**Class:** BsCs  
+**Course:** Compiler Construction  
+**Submitted To:** Iffat Maa'am  
+
+---
+
 ## 1. Token Patterns Table
 The following regular expressions are used to identify tokens in the MiniLang programming language:
 
