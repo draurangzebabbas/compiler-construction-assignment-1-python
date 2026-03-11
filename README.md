@@ -5,7 +5,7 @@
 - **Name:** Aurangzeb Abbas
 - **Roll No:** S23NDOCS1M01044
 - **Program:** BS Computer Science (BsCs)
-- **Semester:** Spring 2026
+- **Semester:** 7th (B-Section)
 
 ### 🎓 Submission Details
 - **Assignment:** #1 - Lexical Analyzer Design & Implementation
